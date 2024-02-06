@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2dp"
+    android:paddingLeft="2dp"
+    android:paddingTop="2dp"
+    android:paddingRight="2dp"
+    android:paddingBottom="2dp"
+    tools:context=".MainActivity">
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alignmentMode="alignMargins"
+        android:columnCount="4"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:rowCount="4">
+
+        <!-- Image parts will be added dynamically here -->
+
+    </GridLayout>
+
+</RelativeLayout>
