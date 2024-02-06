@@ -2,7 +2,9 @@ package projecte.puzle;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -11,18 +13,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private ImageView selectedImageView = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.pb); // Replace `your_image` with the ID of your image
+        Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.cuadrado); // Replace `your_image` with the ID of your image
         Bitmap[][] parts = SplitImatge.divideImage(originalImage, 4, 4);
 
         GridLayout gridLayout = findViewById(R.id.gridLayout);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        int cellWidth = (screenWidth - 16) / 4; // Calculate the width of each cell considering padding
+        int cellWidth = (screenWidth - 50) / 4; // Calculate the width of each cell considering padding
 
         Random random = new Random();
 
@@ -41,6 +45,22 @@ public class MainActivity extends AppCompatActivity {
                 frameLayout.setPadding(8, 8, 8, 8); // Set padding between cells (adjust as needed)
 
                 frameLayout.addView(imageView);
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (selectedImageView == null) {
+                            // No cell is currently selected, select the clicked cell
+                            selectedImageView = (ImageView) v;
+                        } else {
+                            // Another cell is already selected, swap images
+                            Bitmap tempBitmap = ((BitmapDrawable) selectedImageView.getDrawable()).getBitmap();
+                            selectedImageView.setImageBitmap(((BitmapDrawable) ((ImageView) v).getDrawable()).getBitmap());
+                            ((ImageView) v).setImageBitmap(tempBitmap);
+                            selectedImageView = null; // Reset selected cell
+                        }
+                    }
+                });
 
                 int childCount = gridLayout.getChildCount();
                 int randomIndex = random.nextInt(childCount + 1); // Generate a random index within the range [0, childCount]
