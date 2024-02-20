@@ -10,62 +10,86 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+
+import projecte.puzle.R;
+import projecte.puzle.SplitImatge;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView selectedImageView = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.cuadrado); // Replace `your_image` with the ID of your image
-        Bitmap[][] parts = SplitImatge.divideImage(originalImage, 4, 4);
+        Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.pb);
 
         GridLayout gridLayout = findViewById(R.id.gridLayout);
+
+        int rows = 4; // Set the number of rows in your grid
+        int cols = 4; // Set the number of columns in your grid
+
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        int cellWidth = (screenWidth - 50) / 4; // Calculate the width of each cell considering padding
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
 
-        Random random = new Random();
+        int cellWidth = screenWidth / cols;
+        int cellHeight = screenHeight / rows;
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                int randomRow = random.nextInt(4); // Generate a random row index
-                int randomCol = random.nextInt(4); // Generate a random column index
+        gridLayout.setColumnCount(cols);
+        gridLayout.setRowCount(rows);
+
+        Bitmap[][] parts = SplitImatge.divideImage(originalImage, rows, cols, cellWidth, cellHeight);
+
+        // Generate a list of all possible positions
+        List<Integer> positions = new ArrayList<>();
+        for (int i = 0; i < rows * cols; i++) {
+            positions.add(i);
+        }
+
+        // Shuffle the list of positions
+        Collections.shuffle(positions);
+
+        // Counter for iterating through the shuffled positions
+        int positionIndex = 0;
+
+        // Iterate over each cell and assign a shuffled position
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                // Get the next shuffled position
+                int position = positions.get(positionIndex++);
+                int row = position / cols;
+                int col = position % cols;
 
                 ImageView imageView = new ImageView(this);
-                imageView.setLayoutParams(new FrameLayout.LayoutParams(cellWidth, cellWidth)); // Set the size of the ImageView
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP); // Scale the image to fit the ImageView
-                imageView.setImageBitmap(parts[i][j]);
+                imageView.setLayoutParams(new FrameLayout.LayoutParams(cellWidth, cellHeight));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setImageBitmap(parts[row][col]);
 
                 FrameLayout frameLayout = new FrameLayout(this);
-                frameLayout.setLayoutParams(new FrameLayout.LayoutParams(cellWidth, cellWidth));
-                frameLayout.setPadding(8, 8, 8, 8); // Set padding between cells (adjust as needed)
-
+                frameLayout.setLayoutParams(new FrameLayout.LayoutParams(cellWidth, cellHeight));
+                frameLayout.setPadding(4, 4, 4, 4);
                 frameLayout.addView(imageView);
 
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (selectedImageView == null) {
-                            // No cell is currently selected, select the clicked cell
                             selectedImageView = (ImageView) v;
                         } else {
-                            // Another cell is already selected, swap images
                             Bitmap tempBitmap = ((BitmapDrawable) selectedImageView.getDrawable()).getBitmap();
                             selectedImageView.setImageBitmap(((BitmapDrawable) ((ImageView) v).getDrawable()).getBitmap());
                             ((ImageView) v).setImageBitmap(tempBitmap);
-                            selectedImageView = null; // Reset selected cell
+                            selectedImageView = null;
                         }
                     }
                 });
 
-                int childCount = gridLayout.getChildCount();
-                int randomIndex = random.nextInt(childCount + 1); // Generate a random index within the range [0, childCount]
-
-                gridLayout.addView(frameLayout, randomIndex);            }
+                gridLayout.addView(frameLayout);
+            }
         }
     }
 }

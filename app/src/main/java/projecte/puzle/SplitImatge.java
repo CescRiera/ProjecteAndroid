@@ -4,18 +4,27 @@ import android.graphics.Bitmap;
 
 public class SplitImatge {
 
-    // Method to divide the image into specified number of rows and columns
-    public static Bitmap[][] divideImage(Bitmap image, int rows, int cols) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        int partWidth = width / cols;
-        int partHeight = height / rows;
+    // Method to divide the image into parts based on cell width and height
+    public static Bitmap[][] divideImage(Bitmap image, int rows, int cols, int cellWidth, int cellHeight) {
+        int tableWidth = cols * cellWidth;
+        int tableHeight = rows * cellHeight;
+
+        // Resize the image to fit the table size
+        Bitmap resizedImage = Bitmap.createScaledBitmap(image, tableWidth, tableHeight, true);
+
+        int width = resizedImage.getWidth();
+        int height = resizedImage.getHeight();
 
         Bitmap[][] parts = new Bitmap[rows][cols];
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                parts[row][col] = Bitmap.createBitmap(image, col * partWidth, row * partHeight, partWidth, partHeight);
+                // Calculate the starting position for this part
+                int startX = col * cellWidth;
+                int startY = row * cellHeight;
+
+                // Create the part of the resized image
+                parts[row][col] = Bitmap.createBitmap(resizedImage, startX, startY, cellWidth, cellHeight);
             }
         }
 
