@@ -43,19 +43,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.pb);
 
         GridLayout gridLayout = findViewById(R.id.gridLayout);
 
-        int rows = 4; // Set the number of rows in your grid
-        int cols = 4; // Set the number of columns in your grid
+        int rows = 3; // Set the number of rows in your grid
+        int cols = 3; // Set the number of columns in your grid
 
         // Definir valores específicos para la anchura y altura de la pantalla
         int screenWidth = 1080; // Ancho de la pantalla en píxeles
         int screenHeight = 1920; // Alto de la pantalla en píxeles
-
 
         int cellWidth = screenWidth / cols;
         int cellHeight = screenHeight / rows;
@@ -74,22 +71,12 @@ public class MainActivity extends AppCompatActivity {
         // Shuffle the list of positions
         Collections.shuffle(positions);
 
-        // Select a random position to make invisible
-        Random random = new Random();
-        int positionToMakeInvisible = positions.get(random.nextInt(rows * cols));
-
         // Counter for iterating through the shuffled positions
         int positionIndex = 0;
 
-        // Iterate over each cell and assign a shuffled position, except the one to make invisible
+        // Iterate over each cell and assign a shuffled position
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                // Check if the current position is the one to make invisible
-                if (positionIndex == positionToMakeInvisible) {
-                    positionIndex++;
-                    continue;
-                }
-
                 // Get the next shuffled position
                 int position = positions.get(positionIndex++);
                 int row = position / cols;
@@ -98,7 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 ImageView imageView = new ImageView(this);
                 imageView.setLayoutParams(new FrameLayout.LayoutParams(cellWidth, cellHeight));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setImageBitmap(parts[row][col]);
+
+                if (position == rows * cols - 1) {
+                    // Si es la última posición, asignar un bitmap vacío
+                    imageView.setImageBitmap(Bitmap.createBitmap(cellWidth, cellHeight, Bitmap.Config.ARGB_8888));
+                } else {
+                    imageView.setImageBitmap(parts[row][col]);
+                }
 
                 FrameLayout frameLayout = new FrameLayout(this);
                 frameLayout.setLayoutParams(new FrameLayout.LayoutParams(cellWidth, cellHeight));
@@ -108,29 +101,45 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (selectedImageView == null) {
-                            selectedImageView = (ImageView) v;
+                        ImageView clickedImageView = (ImageView) v;
+                        int clickedPosition = gridLayout.indexOfChild((View) clickedImageView.getParent());
 
+                        if (selectedImageView != null) {
+                            int selectedPosition = gridLayout.indexOfChild((View) selectedImageView.getParent());
+
+                            // Obtiene las coordenadas (fila, columna) de la celda seleccionada y la celda vacía
+                            int selectedRow = selectedPosition / cols;
+                            int selectedCol = selectedPosition % cols;
+                            int clickedRow = clickedPosition / cols;
+                            int clickedCol = clickedPosition % cols;
+
+                            // Comprueba si la celda seleccionada está adyacente a la celda vacía
+                            if ((Math.abs(selectedRow - clickedRow) == 1 && selectedCol == clickedCol) ||
+                                    (Math.abs(selectedCol - clickedCol) == 1 && selectedRow == clickedRow)) {
+                                // Si las celdas están adyacentes, intercambia las imágenes
+                                Bitmap tempBitmap = ((BitmapDrawable) selectedImageView.getDrawable()).getBitmap();
+                                selectedImageView.setImageBitmap(((BitmapDrawable) clickedImageView.getDrawable()).getBitmap());
+                                clickedImageView.setImageBitmap(tempBitmap);
+                                selectedImageView.clearColorFilter();
+                                selectedImageView = null;
+                            }
+                        } else {
+                            // Si no hay ninguna imagen seleccionada, selecciona la imagen clicada
+                            selectedImageView = clickedImageView;
                             ColorMatrix matrix = new ColorMatrix();
                             matrix.setSaturation(0);
-
                             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                            selectedImageView.setColorFilter(filter);       // Cambiar color al clickar
-
-                        } else {
-                            Bitmap tempBitmap = ((BitmapDrawable) selectedImageView.getDrawable()).getBitmap();
-                            selectedImageView.setImageBitmap(((BitmapDrawable) ((ImageView) v).getDrawable()).getBitmap());
-                            ((ImageView) v).setImageBitmap(tempBitmap);
-                            selectedImageView.clearColorFilter();
-                            selectedImageView = null;
+                            selectedImageView.setColorFilter(filter); // Cambiar color al clicar
                         }
                     }
+
                 });
 
                 gridLayout.addView(frameLayout);
             }
         }
     }
+
     protected void onDestroy() {
         super.onDestroy();
         // Alliberar recursos en la destrucció de l'activitat
