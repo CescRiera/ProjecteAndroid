@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         GridLayout gridLayout = findViewById(R.id.gridLayout);
 
-        int rows = 3; // Set the number of rows in your grid
-        int cols = 3; // Set the number of columns in your grid
+        int rows = 4; // Set the number of rows in your grid
+        int cols = 4; // Set the number of columns in your grid
 
         // Definir valores específicos para la anchura y altura de la pantalla
         int screenWidth = 1080; // Ancho de la pantalla en píxeles

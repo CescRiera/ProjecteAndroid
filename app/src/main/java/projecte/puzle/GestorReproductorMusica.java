@@ -38,6 +38,7 @@ public class GestorReproductorMusica {
         }
     }
 
+
     public static void alliberar() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
