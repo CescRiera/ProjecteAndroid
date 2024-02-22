@@ -1,33 +1,33 @@
 package projecte.puzle;
 
 import android.graphics.Bitmap;
-
 public class SplitImatge {
 
-    // Method to divide the image into parts based on cell width and height
-    public static Bitmap[][] divideImage(Bitmap image, int rows, int cols, int cellWidth, int cellHeight) {
-        int tableWidth = cols * cellWidth;
-        int tableHeight = rows * cellHeight;
+    // Mètode per dividir la imatge en parts basades en l'amplada i alcada de les cel·les
+    public static Bitmap[][] divideImage(Bitmap imatge, int files, int columnes, int ampladaCella, int alcadaCella) {
+        int ampladaTaula = columnes * ampladaCella;
+        int alcadaTaula = files * alcadaCella;
 
-        // Resize the image to fit the table size
-        Bitmap resizedImage = Bitmap.createScaledBitmap(image, tableWidth, tableHeight, true);
+        // Redimensiona la imatge per ajustar-se a la mida de la taula
+        Bitmap imatgeRedimensionada = Bitmap.createScaledBitmap(imatge, ampladaTaula, alcadaTaula, true);
 
-        int width = resizedImage.getWidth();
-        int height = resizedImage.getHeight();
+        int amplada = imatgeRedimensionada.getWidth();
+        int alcada = imatgeRedimensionada.getHeight();
 
-        Bitmap[][] parts = new Bitmap[rows][cols];
+        Bitmap[][] parts = new Bitmap[files][columnes];
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                // Calculate the starting position for this part
-                int startX = col * cellWidth;
-                int startY = row * cellHeight;
+        for (int fila = 0; fila < files; fila++) {
+            for (int columna = 0; columna < columnes; columna++) {
+                // Calcula la posició inicial per a aquesta part
+                int startX = columna * ampladaCella;
+                int startY = fila * alcadaCella;
 
-                // Create the part of the resized image
-                parts[row][col] = Bitmap.createBitmap(resizedImage, startX, startY, cellWidth, cellHeight);
+                // Crea la part de la imatge redimensionada
+                parts[fila][columna] = Bitmap.createBitmap(imatgeRedimensionada, startX, startY, ampladaCella, alcadaCella);
             }
         }
 
         return parts;
     }
 }
+

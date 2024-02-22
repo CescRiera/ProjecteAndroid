@@ -2,6 +2,8 @@ package projecte.puzle;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -30,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         GridLayout gridLayout = findViewById(R.id.gridLayout);
 
-        int rows = 4; // Set the number of rows in your grid
-        int cols = 4; // Set the number of columns in your grid
+        int rows = 2; // Set the number of rows in your grid
+        int cols = 2; // Set the number of columns in your grid
 
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
@@ -79,10 +81,18 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (selectedImageView == null) {
                             selectedImageView = (ImageView) v;
+
+                            ColorMatrix matrix = new ColorMatrix();
+                            matrix.setSaturation(0);
+
+                            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                            selectedImageView.setColorFilter(filter);       // Cambiar color al clickar
+
                         } else {
                             Bitmap tempBitmap = ((BitmapDrawable) selectedImageView.getDrawable()).getBitmap();
                             selectedImageView.setImageBitmap(((BitmapDrawable) ((ImageView) v).getDrawable()).getBitmap());
                             ((ImageView) v).setImageBitmap(tempBitmap);
+                            selectedImageView.clearColorFilter();
                             selectedImageView = null;
                         }
                     }
