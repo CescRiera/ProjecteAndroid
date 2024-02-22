@@ -10,20 +10,22 @@
     android:paddingBottom="2dp"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/botoAlternarMusica"
+        android:layout_width="152dp"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Reproduir" />
+
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/botoAlternarMusica"
         android:alignmentMode="alignMargins"
-        android:columnCount="4"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="8dp"
-        android:rowCount="4">
-
-        <!-- Image parts will be added dynamically here -->
-
-    </GridLayout>
+        android:columnCount="3"
+        android:padding="8dp"
+        android:rowCount="3" />
 
 </RelativeLayout>

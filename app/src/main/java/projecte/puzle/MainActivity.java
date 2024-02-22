@@ -7,9 +7,13 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import androidx.appcompat.app.AppCompatActivity;
+import android.media.MediaPlayer;
+import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -22,21 +26,36 @@ import projecte.puzle.SplitImatge;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView selectedImageView = null;
+    private Button botoAlternarMusica;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GestorReproductorMusica.inicialitzar(this, R.raw.m02_audio1);
+        botoAlternarMusica = findViewById(R.id.botoAlternarMusica);
+        botoAlternarMusica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GestorReproductorMusica.alternarMusica(botoAlternarMusica);
+            }
+        });
+
+
 
         Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.pb);
 
         GridLayout gridLayout = findViewById(R.id.gridLayout);
 
-        int rows = 2; // Set the number of rows in your grid
-        int cols = 2; // Set the number of columns in your grid
+        int rows = 3; // Set the number of rows in your grid
+        int cols = 3; // Set the number of columns in your grid
 
-        int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+        // Definir valores específicos para la anchura y altura de la pantalla
+        int screenWidth = 1080; // Ancho de la pantalla en píxeles
+        int screenHeight = 1920; // Alto de la pantalla en píxeles
+
 
         int cellWidth = screenWidth / cols;
         int cellHeight = screenHeight / rows;
@@ -55,12 +74,22 @@ public class MainActivity extends AppCompatActivity {
         // Shuffle the list of positions
         Collections.shuffle(positions);
 
+        // Select a random position to make invisible
+        Random random = new Random();
+        int positionToMakeInvisible = positions.get(random.nextInt(rows * cols));
+
         // Counter for iterating through the shuffled positions
         int positionIndex = 0;
 
-        // Iterate over each cell and assign a shuffled position
+        // Iterate over each cell and assign a shuffled position, except the one to make invisible
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
+                // Check if the current position is the one to make invisible
+                if (positionIndex == positionToMakeInvisible) {
+                    positionIndex++;
+                    continue;
+                }
+
                 // Get the next shuffled position
                 int position = positions.get(positionIndex++);
                 int row = position / cols;
@@ -101,5 +130,10 @@ public class MainActivity extends AppCompatActivity {
                 gridLayout.addView(frameLayout);
             }
         }
+    }
+    protected void onDestroy() {
+        super.onDestroy();
+        // Alliberar recursos en la destrucció de l'activitat
+        GestorReproductorMusica.alliberar();
     }
 }
