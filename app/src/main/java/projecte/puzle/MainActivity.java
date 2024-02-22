@@ -14,7 +14,12 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +32,9 @@ import projecte.puzle.SplitImatge;
 public class MainActivity extends AppCompatActivity {
     private ImageView selectedImageView = null;
     private Button botoAlternarMusica;
+    private int movimientoCounter = 0;
+    private TextView score;
+
 
 
 
@@ -34,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Dentro del método onCreate() de MainActivity
+        DatabaseReference DBArtistes = FirebaseDatabase.getInstance().getReference("Pene");
+
+        score = findViewById(R.id.cmpt);
         GestorReproductorMusica.inicialitzar(this, R.raw.m02_audio1);
         botoAlternarMusica = findViewById(R.id.botoAlternarMusica);
         botoAlternarMusica.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                             int clickedRow = clickedPosition / cols;
                             int clickedCol = clickedPosition % cols;
 
+
                             // Comprueba si la celda seleccionada está adyacente a la celda vacía
                             if ((Math.abs(selectedRow - clickedRow) == 1 && selectedCol == clickedCol) ||
                                     (Math.abs(selectedCol - clickedCol) == 1 && selectedRow == clickedRow)) {
@@ -122,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
                                 clickedImageView.setImageBitmap(tempBitmap);
                                 selectedImageView.clearColorFilter();
                                 selectedImageView = null;
+                                movimientoCounter++;
+                                score.setText("Movimientos: " + movimientoCounter);
+
                             }
                         } else {
                             // Si no hay ninguna imagen seleccionada, selecciona la imagen clicada
