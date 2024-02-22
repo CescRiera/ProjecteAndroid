@@ -10,13 +10,6 @@
     android:paddingBottom="2dp"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/botoAlternarMusica"
-        android:layout_width="152dp"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Reproduir" />
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -27,5 +20,21 @@
         android:columnCount="3"
         android:padding="8dp"
         android:rowCount="3" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="391dp"
+        android:layout_height="46dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <Button
+        android:id="@+id/botoAlternarMusica"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-1dp"
+        android:text="Reproduir" />
 
 </RelativeLayout>
