@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".PantallaInicial">
+
+    <Button
+        android:id="@+id/btnNivel1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nivel 1" />
+
+    <Button
+        android:id="@+id/btnNivel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnNivel1"
+        android:text="Nivel 2" />
+
+    <Button
+        android:id="@+id/btnNivel3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnNivel2"
+        android:text="Nivel 3" />
+
+</RelativeLayout>
