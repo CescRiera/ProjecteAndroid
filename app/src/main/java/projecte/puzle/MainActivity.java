@@ -6,44 +6,43 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import androidx.appcompat.app.AppCompatActivity;
-import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import projecte.puzle.R;
 import projecte.puzle.SplitImatge;
 
 public class MainActivity extends AppCompatActivity {
+    FirebaseFirestore firestore;
     private ImageView selectedImageView = null;
     private Button botoAlternarMusica;
     private int movimientoCounter = 0;
     private TextView score;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        firestore = FirebaseFirestore.getInstance();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Dentro del método onCreate() de MainActivity
-        DatabaseReference DBArtistes = FirebaseDatabase.getInstance().getReference("Pene");
 
         score = findViewById(R.id.cmpt);
         GestorReproductorMusica.inicialitzar(this, R.raw.m02_audio1);
@@ -110,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 frameLayout.setPadding(4, 4, 4, 4);
                 frameLayout.addView(imageView);
 
+
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -137,7 +137,10 @@ public class MainActivity extends AppCompatActivity {
                                 selectedImageView = null;
                                 movimientoCounter++;
                                 score.setText("Movimientos: " + movimientoCounter);
+                                guardarPuntuacionEnFirestore(movimientoCounter);
 
+
+                                // Guardar el puntaje en Firestore aquí
                             }
                         } else {
                             // Si no hay ninguna imagen seleccionada, selecciona la imagen clicada
@@ -150,11 +153,30 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 });
-
                 gridLayout.addView(frameLayout);
             }
         }
     }
+    private void guardarPuntuacionEnFirestore(int puntuacion) {
+        // Create a new document with a generated ID
+        firestore.collection("puntuaciones")
+                .document("puntuaciones") // Referencia al documento existente
+                .set(new Puntuacio(puntuacion))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                            // Éxito
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Error
+                    }
+                });
+
+    }
+
 
     protected void onDestroy() {
         super.onDestroy();

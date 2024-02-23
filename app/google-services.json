@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "136190890538",
-    "project_id": "projectepuzle",
-    "storage_bucket": "projectepuzle.appspot.com"
+    "project_number": "240919239095",
+    "project_id": "projectecescmaf",
+    "storage_bucket": "projectecescmaf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:136190890538:android:01fe7d09ccb0f1d28aa953",
+        "mobilesdk_app_id": "1:240919239095:android:32b860a6004752be61b032",
         "android_client_info": {
           "package_name": "projecte.puzle"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyApXQ5-eA9m59gL5QRJ9wcDEwRH2IsYQ7U"
+          "current_key": "AIzaSyBSbwE45iA2P3UgqF0Ujcd6A4EJYa3wg1o"
         }
       ],
       "services": {
