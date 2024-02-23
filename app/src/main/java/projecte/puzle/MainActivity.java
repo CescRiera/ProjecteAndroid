@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Dentro del método onCreate() de tu actividad MainActivity
+        firestore = FirebaseFirestore.getInstance();
+
         btnVolverInicio = findViewById(R.id.btnVolverInicio);
         btnVolverInicio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,8 +179,11 @@ public class MainActivity extends AppCompatActivity {
         // Generar una nueva clave única para la puntuación
         String nuevaClave = databaseReference.push().getKey();
 
+        // Crear un objeto Puntuacio con la puntuación proporcionada
+        Puntuacio puntuacio = new Puntuacio(puntuacion);
+
         // Guardar la puntuación en la base de datos en tiempo real bajo la nueva clave
-        databaseReference.child(nuevaClave).setValue(puntuacion)
+        databaseReference.child(nuevaClave).setValue(puntuacio)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -193,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
 
 
