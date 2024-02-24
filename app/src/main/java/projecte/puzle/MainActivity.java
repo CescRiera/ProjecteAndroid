@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -122,6 +123,18 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        MediaPlayer mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.tmp8ld6oe3a);
+
+                        // Iniciar la reproducción del sonido
+                        mediaPlayer.start();
+
+                        // Liberar los recursos del MediaPlayer cuando el sonido haya terminado de reproducirse
+                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mediaPlayer) {
+                                mediaPlayer.release();
+                            }
+                        });
                         ImageView clickedImageView = (ImageView) v;
                         int clickedPosition = gridLayout.indexOfChild((View) clickedImageView.getParent());
 
@@ -198,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("puntuacion", puntuacio);
         startService(intent);
     }
+
 
     @Override
     protected void onDestroy() {

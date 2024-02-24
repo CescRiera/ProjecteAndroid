@@ -2,8 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="projecte.puzle">
 
-    <!-- Agrega permiso de Internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permiso para acceder a la cámara -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Permiso para escribir en el almacenamiento externo (opcional, si deseas guardar imágenes) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Agrega características de la cámara -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
