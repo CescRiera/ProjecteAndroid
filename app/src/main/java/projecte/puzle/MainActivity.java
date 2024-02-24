@@ -144,11 +144,12 @@ public class MainActivity extends AppCompatActivity {
                                 selectedImageView = null;
                                 movimientoCounter++;
                                 score.setText("Movimientos: " + movimientoCounter);
-                                guardarPuntuacionEnSegundoPlano(movimientoCounter);
 
                                 if (puzzleCompleted()) {
                                     showPuzzleCompletedMessage();
                                     Log.d("MainActivity", "¡Puzzle completado!");
+                                    guardarPuntuacionEnSegundoPlano(movimientoCounter);
+
                                 } else {
                                     Log.d("MainActivity", "Movimiento: " + movimientoCounter + ", Puzzle no completado");
                                 }
@@ -192,8 +193,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void guardarPuntuacionEnSegundoPlano(int puntuacion) {
+        Puntuacio puntuacio = new Puntuacio(puntuacion);
         Intent intent = new Intent(this, SaveScoreService.class);
-        intent.putExtra("score", puntuacion);
+        intent.putExtra("puntuacion", puntuacio);
         startService(intent);
     }
 

@@ -28,5 +28,9 @@
         <!-- Actividad MainActivity -->
         <activity android:name=".MainActivity" />
 
+        <!-- Servicio SaveScoreService -->
+        <service
+            android:name=".SaveScoreService"
+            android:exported="false" />
     </application>
 </manifest>

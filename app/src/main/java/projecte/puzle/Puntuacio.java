@@ -1,15 +1,8 @@
 package projecte.puzle;
 
-import com.google.firebase.database.IgnoreExtraProperties;
+import java.io.Serializable;
 
-/**
- * Clase Puntuacion que representa la puntuación de un artista
- * @version 1.0 22.02.2024
- */
-
-@IgnoreExtraProperties
-public class Puntuacio {
-
+public class Puntuacio implements Serializable {
     private int score;
 
     public Puntuacio() {

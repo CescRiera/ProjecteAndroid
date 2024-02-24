@@ -2,6 +2,8 @@ package projecte.puzle;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -16,22 +18,27 @@ public class SaveScoreService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d("SaveScoreService", "Servicio SaveScoreService iniciado correctamente.");
         if (intent != null) {
-            int score = intent.getIntExtra("score", 0);
-            guardarPuntuacionEnRealtimeDatabase(score);
+            Puntuacio puntuacio = (Puntuacio) intent.getSerializableExtra("puntuacion");
+            if (puntuacio != null) {
+                guardarPuntuacionEnRealtimeDatabase(puntuacio);
+            }
         }
     }
 
-    private void guardarPuntuacionEnRealtimeDatabase(int puntuacion) {
-        // Aquí colocas la lógica para guardar la puntuación en la base de datos en tiempo real
+
+
+
+    private void guardarPuntuacionEnRealtimeDatabase(Puntuacio puntuacio) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("puntuaciones");
         String nuevaClave = databaseReference.push().getKey();
-        Puntuacio puntuacio = new Puntuacio(puntuacion);
         databaseReference.child(nuevaClave).setValue(puntuacio)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Éxito
+                        Log.d("SaveScoreService", "Puntuación guardada exitosamente en la base de datos.");
                         // Puedes enviar una notificación de éxito si lo deseas
                     }
                 })
@@ -39,8 +46,14 @@ public class SaveScoreService extends IntentService {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Error
+                        Log.e("SaveScoreService", "Error al guardar la puntuación en la base de datos: " + e.getMessage());
                         // Puedes enviar una notificación de error si lo deseas
                     }
                 });
     }
+
+
+
+
+
 }
