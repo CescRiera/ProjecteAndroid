@@ -32,17 +32,17 @@
 
     <Button
         android:id="@+id/btnVolverInicio"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="-1dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
         android:text="Volver a inicio" />
 
     <Button
         android:id="@+id/botoAlternarMusica"
-        android:layout_width="128dp"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar2"
         android:layout_alignParentStart="true"
@@ -62,7 +62,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:text="Movimientos: 0"
-        android:textColorHighlight="#EA0606"
+        android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         android:textColorLink="#DC1010"
         android:textSize="18sp" />

@@ -9,29 +9,70 @@
         android:id="@+id/toolbar"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        tools:layout_editor_absoluteX="1dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toTopOf="@+id/btnNivel1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="2dp" />
 
     <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnNivel1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="416dp"
-        android:text="START"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="52dp"
+        android:text="Nivel 1"
+        app:layout_constraintBottom_toTopOf="@+id/btnNivel2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textInici"
-        android:layout_width="36dp"
-        android:layout_height="14dp"
-        android:text="Jugar"
-        app:layout_constraintBottom_toTopOf="@+id/start"
+    <Button
+        android:id="@+id/btnNivel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnNivel1"
+        android:layout_marginBottom="52dp"
+        android:text="Nivel 2"
+        app:layout_constraintBottom_toTopOf="@+id/btnNivel3"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btnNivel3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnNivel2"
+        android:layout_marginBottom="284dp"
+        android:text="Nivel 3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/botoAlternarMusica"
+        android:layout_width="199dp"
+        android:layout_height="49dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="60dp"
+        android:text="Reproduir Musica"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        tools:layout_editor_absoluteY="9dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="178dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="12dp"
+        android:text="Puzzzzzle"
+        android:textColor="@color/black"
+        android:textSize="37dp"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,14 +57,43 @@ public class MainActivity extends AppCompatActivity {
         rows = cols = dimensiones;
 
         score = findViewById(R.id.cmpt);
-        GestorReproductorMusica.inicialitzar(this, R.raw.m02_audio1);
+
+        /*Intent intenta = new Intent(this, SoundService.class); // 1er IntentService
+        intenta.putExtra("soundId", R.raw.m02_audio1);
+        startService(intent);*/
+
+
+        //GestorReproductorMusica.inicialitzar(this, R.raw.m02_audio1);
+        //botoAlternarMusica = findViewById(R.id.botoAlternarMusica);
         botoAlternarMusica = findViewById(R.id.botoAlternarMusica);
+        ReproductorMusicaIntentService.iniciarMusica(this, R.raw.m02_audio1);// Para pausar la música
         botoAlternarMusica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GestorReproductorMusica.alternarMusica(botoAlternarMusica);
+                String textoBoton = botoAlternarMusica.getText().toString();
+                Log.d("klk",""+ textoBoton);
+
+                switch (textoBoton) {
+                    case "Reproduir Musica":
+                        ReproductorMusicaIntentService.iniciarMusica(getApplicationContext(), R.raw.m02_audio1);
+                        botoAlternarMusica.setText("Pausar Musica");
+                        break;
+                    case "Pausar Musica":
+                        ReproductorMusicaIntentService.pausarMusica(getApplicationContext());
+                        botoAlternarMusica.setText("Reanudar Musica");
+                        break;
+                    case "Reanudar Musica":
+                        ReproductorMusicaIntentService.reanudarMusica(getApplicationContext());
+                        botoAlternarMusica.setText("Pausar Musica");
+                        break;
+                    // Agrega más casos según sea necesario
+                }
             }
         });
+
+
+        ReproductorMusicaIntentService.pausarMusica(this);
+        ReproductorMusicaIntentService.reanudarMusica(this);
 
         Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.pb);
         GridLayout gridLayout = findViewById(R.id.gridLayout);
@@ -124,17 +154,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         MediaPlayer mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.tmp8ld6oe3a);
-
-                        // Iniciar la reproducción del sonido
-                        mediaPlayer.start();
-
-                        // Liberar los recursos del MediaPlayer cuando el sonido haya terminado de reproducirse
-                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mediaPlayer) {
-                                mediaPlayer.release();
-                            }
-                        });
                         ImageView clickedImageView = (ImageView) v;
                         int clickedPosition = gridLayout.indexOfChild((View) clickedImageView.getParent());
 
@@ -145,8 +164,7 @@ public class MainActivity extends AppCompatActivity {
                             int clickedRow = clickedPosition / cols;
                             int clickedCol = clickedPosition % cols;
 
-                            if ((Math.abs(selectedRow - clickedRow) == 1 && selectedCol == clickedCol) ||
-                                    (Math.abs(selectedCol - clickedCol) == 1 && selectedRow == clickedRow)) {
+                            if ((Math.abs(selectedRow - clickedRow) == 1 && selectedCol == clickedCol) || (Math.abs(selectedCol - clickedCol) == 1 && selectedRow == clickedRow)) {
                                 int temp = currentPositions[selectedRow][selectedCol];
                                 currentPositions[selectedRow][selectedCol] = currentPositions[clickedRow][clickedCol];
                                 currentPositions[clickedRow][clickedCol] = temp;
@@ -156,12 +174,17 @@ public class MainActivity extends AppCompatActivity {
                                 selectedImageView.clearColorFilter();
                                 selectedImageView = null;
                                 movimientoCounter++;
+                                mediaPlayer.start();
+
                                 score.setText("Movimientos: " + movimientoCounter);
 
                                 if (puzzleCompleted()) {
                                     showPuzzleCompletedMessage();
                                     Log.d("MainActivity", "¡Puzzle completado!");
                                     guardarPuntuacionEnSegundoPlano(movimientoCounter);
+                                    Intent intent = new Intent(MainActivity.this, PantallaFinalActivity.class);
+                                    intent.putExtra("puntuacion", new Puntuacio(movimientoCounter, new Date()));
+                                    startActivity(intent);
 
                                 } else {
                                     Log.d("MainActivity", "Movimiento: " + movimientoCounter + ", Puzzle no completado");
@@ -182,14 +205,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean puzzleCompleted() {
-        int correctCells = 0; // Counter for correct cells
-
-        // Iterate through each cell of the puzzle
+        int correctCells = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                // Check if the current position matches the original position
                 if (currentPositions[i][j] == originalPositions[i][j]) {
-                    correctCells++; // Increment correct cell counter
+                    correctCells++;
                 }
             }
         }
@@ -206,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void guardarPuntuacionEnSegundoPlano(int puntuacion) {
-        Puntuacio puntuacio = new Puntuacio(puntuacion);
+        Puntuacio puntuacio = new Puntuacio(puntuacion, new Date());
         Intent intent = new Intent(this, SaveScoreService.class);
         intent.putExtra("puntuacion", puntuacio);
         startService(intent);

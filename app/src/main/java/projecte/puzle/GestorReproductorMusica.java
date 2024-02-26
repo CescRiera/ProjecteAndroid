@@ -13,6 +13,9 @@ public class GestorReproductorMusica {
         mediaPlayer = MediaPlayer.create(context, recursoMusica);
         mediaPlayer.setLooping(true);
     }
+    public static boolean getMusicState(){
+        return musicaReproduint;
+    }
 
     public static void alternarMusica(Button botoAlternarMusica) {
         if (musicaReproduint) {

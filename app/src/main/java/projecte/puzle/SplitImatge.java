@@ -12,9 +12,6 @@ public class SplitImatge {
         // Redimensiona la imatge per ajustar-se a la mida de la taula
         Bitmap imatgeRedimensionada = Bitmap.createScaledBitmap(imatge, ampladaTaula, alcadaTaula, true);
 
-        int amplada = imatgeRedimensionada.getWidth();
-        int alcada = imatgeRedimensionada.getHeight();
-
         Bitmap[][] parts = new Bitmap[files][columnes];
 
         for (int fila = 0; fila < files; fila++) {

@@ -23,6 +23,7 @@ public class SaveScoreService extends IntentService {
             Puntuacio puntuacio = (Puntuacio) intent.getSerializableExtra("puntuacion");
             if (puntuacio != null) {
                 guardarPuntuacionEnRealtimeDatabase(puntuacio);
+                Log.d("klk","P: "+puntuacio.getScore());
             }
         }
     }
@@ -38,7 +39,7 @@ public class SaveScoreService extends IntentService {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Éxito
-                        Log.d("SaveScoreService", "Puntuación guardada exitosamente en la base de datos.");
+                        Log.d("klk", "Puntuación guardada exitosamente en la base de datos.");
                         // Puedes enviar una notificación de éxito si lo deseas
                     }
                 })
@@ -46,7 +47,7 @@ public class SaveScoreService extends IntentService {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Error
-                        Log.e("SaveScoreService", "Error al guardar la puntuación en la base de datos: " + e.getMessage());
+                        Log.e("klk", "Error al guardar la puntuación en la base de datos: " + e.getMessage());
                         // Puedes enviar una notificación de error si lo deseas
                     }
                 });

@@ -6,10 +6,12 @@
     android:padding="16dp"
     tools:context=".PantallaInicial">
 
+
     <Button
         android:id="@+id/btnNivel1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="122dp"
         android:text="Nivel 1" />
 
     <Button
@@ -17,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnNivel1"
+        android:layout_marginTop="27dp"
         android:text="Nivel 2" />
 
     <Button
@@ -24,7 +27,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnNivel2"
+        android:layout_marginTop="23dp"
         android:text="Nivel 3" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
 
 </RelativeLayout>
